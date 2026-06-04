@@ -9,29 +9,36 @@ public class TranscriptionJob {
 
     private final UUID id;
     private final String mediaSource;
+    private final String sourceHash;
+
     private TranscriptionStatus status;
+
     private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public TranscriptionJob(
             String mediaSource,
+            String sourceHash,
             LocalDateTime createdAt
     ) {
 
-        if (mediaSource == null || mediaSource.isBlank()) {
-            throw new IllegalArgumentException("Media source cannot be null or empty");
-        }
-
-        if (createdAt == null) {
-            throw new IllegalArgumentException("CreatedAt cannot be null");
-        }
+        validateMediaSource(mediaSource);
+        validateSourceHash(sourceHash);
+        validateCreatedAt(createdAt);
 
         this.id = UUID.randomUUID();
         this.mediaSource = mediaSource;
+        this.sourceHash = sourceHash;
+
         this.status = TranscriptionStatus.PENDING;
+
         this.createdAt = createdAt;
+        this.updatedAt = createdAt;
     }
 
-    public void markAsProcessing() {
+    public void markAsProcessing(LocalDateTime updatedAt) {
+
+        validateUpdatedAt(updatedAt);
 
         if (this.status != TranscriptionStatus.PENDING) {
             throw new IllegalStateException(
@@ -40,9 +47,12 @@ public class TranscriptionJob {
         }
 
         this.status = TranscriptionStatus.PROCESSING;
+        this.updatedAt = updatedAt;
     }
 
-    public void markAsCompleted() {
+    public void markAsCompleted(LocalDateTime updatedAt) {
+
+        validateUpdatedAt(updatedAt);
 
         if (this.status != TranscriptionStatus.PROCESSING) {
             throw new IllegalStateException(
@@ -51,9 +61,12 @@ public class TranscriptionJob {
         }
 
         this.status = TranscriptionStatus.COMPLETED;
+        this.updatedAt = updatedAt;
     }
 
-    public void markAsFailed() {
+    public void markAsFailed(LocalDateTime updatedAt) {
+
+        validateUpdatedAt(updatedAt);
 
         if (this.status != TranscriptionStatus.PROCESSING) {
             throw new IllegalStateException(
@@ -62,6 +75,49 @@ public class TranscriptionJob {
         }
 
         this.status = TranscriptionStatus.FAILED;
+        this.updatedAt = updatedAt;
+    }
+
+    private void validateMediaSource(String mediaSource) {
+
+        if (mediaSource == null || mediaSource.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Media source cannot be null or empty"
+            );
+        }
+    }
+
+    private void validateSourceHash(String sourceHash) {
+
+        if (sourceHash == null || sourceHash.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Source hash cannot be null or empty"
+            );
+        }
+    }
+
+    private void validateCreatedAt(LocalDateTime createdAt) {
+
+        if (createdAt == null) {
+            throw new IllegalArgumentException(
+                    "CreatedAt cannot be null"
+            );
+        }
+    }
+
+    private void validateUpdatedAt(LocalDateTime updatedAt) {
+
+        if (updatedAt == null) {
+            throw new IllegalArgumentException(
+                    "UpdatedAt cannot be null"
+            );
+        }
+
+        if (updatedAt.isBefore(this.updatedAt)) {
+            throw new IllegalArgumentException(
+                    "UpdatedAt cannot be before current updatedAt"
+            );
+        }
     }
 
     public UUID getId() {
@@ -72,11 +128,19 @@ public class TranscriptionJob {
         return mediaSource;
     }
 
+    public String getSourceHash() {
+        return sourceHash;
+    }
+
     public TranscriptionStatus getStatus() {
         return status;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
