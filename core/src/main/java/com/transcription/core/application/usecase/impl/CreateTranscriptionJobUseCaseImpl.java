@@ -3,6 +3,7 @@ package com.transcription.core.application.usecase.impl;
 import com.transcription.core.application.dto.CreateTranscriptionJobRequest;
 import com.transcription.core.application.dto.CreateTranscriptionJobResponse;
 import com.transcription.core.application.gateway.SourceHashGenerator;
+import com.transcription.core.application.gateway.TranscriptionEventPublisher;
 import com.transcription.core.application.gateway.TranscriptionJobRepository;
 import com.transcription.core.application.usecase.CreateTranscriptionJobUseCase;
 import com.transcription.core.domain.entity.TranscriptionJob;
@@ -12,11 +13,13 @@ import java.time.LocalDateTime;
 
 public class CreateTranscriptionJobUseCaseImpl implements CreateTranscriptionJobUseCase {
 
+    private final TranscriptionEventPublisher transcriptionEventPublisher;
     private final TranscriptionJobRepository repository;
     private final SourceHashGenerator hashGenerator;
     private final Clock clock;
 
-    public CreateTranscriptionJobUseCaseImpl(TranscriptionJobRepository repository, SourceHashGenerator hashGenerator, Clock clock) {
+    public CreateTranscriptionJobUseCaseImpl(TranscriptionEventPublisher transcriptionEventPublisher, TranscriptionJobRepository repository, SourceHashGenerator hashGenerator, Clock clock) {
+        this.transcriptionEventPublisher = transcriptionEventPublisher;
         this.repository = repository;
         this.hashGenerator = hashGenerator;
         this.clock = clock;
@@ -38,6 +41,8 @@ public class CreateTranscriptionJobUseCaseImpl implements CreateTranscriptionJob
         );
 
         repository.save(job);
+
+        transcriptionEventPublisher.publishJobCreated(job.getId(), sourceHash);
 
         return new CreateTranscriptionJobResponse(
                 job.getId()
