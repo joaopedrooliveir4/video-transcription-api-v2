@@ -1,6 +1,7 @@
 package com.transcription.api.config;
 
 import com.transcription.core.application.gateway.SourceHashGenerator;
+import com.transcription.core.application.gateway.TranscriptionCacheGateway;
 import com.transcription.core.application.gateway.TranscriptionEventPublisher;
 import com.transcription.core.application.gateway.TranscriptionJobRepository;
 import com.transcription.core.application.usecase.CreateTranscriptionJobUseCase;
@@ -15,12 +16,13 @@ public class UseCaseConfig {
 
     @Bean
     public CreateTranscriptionJobUseCase createTranscriptionJobUseCase(
+            TranscriptionCacheGateway transcriptionCacheGateway,
             TranscriptionEventPublisher transcriptionEventPublisher,
             TranscriptionJobRepository repository,
             SourceHashGenerator hashGenerator,
             Clock clock
     ) {
-        return new CreateTranscriptionJobUseCaseImpl(transcriptionEventPublisher, repository, hashGenerator, clock);
+        return new CreateTranscriptionJobUseCaseImpl(transcriptionEventPublisher, transcriptionCacheGateway, repository, hashGenerator, clock);
     }
 
     @Bean

@@ -6,6 +6,8 @@ import com.transcription.infra.persistence.mapper.TranscriptionJobMapper;
 import com.transcription.infra.persistence.repository.SpringDataTranscriptionJobRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class TranscriptionJobRepositoryAdapter
         implements TranscriptionJobRepository {
@@ -23,5 +25,10 @@ public class TranscriptionJobRepositoryAdapter
         repository.save(
                 TranscriptionJobMapper.toJpaEntity(job)
         );
+    }
+
+    @Override
+    public Optional<TranscriptionJob> findBySourceHash(String sourceHash) {
+        return repository.findBySourceHash(sourceHash).map(TranscriptionJobMapper::toDomain);
     }
 }

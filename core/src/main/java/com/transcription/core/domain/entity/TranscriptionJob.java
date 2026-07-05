@@ -36,6 +36,19 @@ public class TranscriptionJob {
         this.updatedAt = createdAt;
     }
 
+    public TranscriptionJob(UUID id, String mediaSource, String sourceHash, TranscriptionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        validateMediaSource(mediaSource);
+        validateSourceHash(sourceHash);
+        validateCreatedAt(createdAt);
+
+        this.id = id;
+        this.mediaSource = mediaSource;
+        this.sourceHash = sourceHash;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public void markAsProcessing(LocalDateTime updatedAt) {
 
         validateUpdatedAt(updatedAt);
