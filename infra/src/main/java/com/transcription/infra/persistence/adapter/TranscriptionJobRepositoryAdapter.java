@@ -7,6 +7,7 @@ import com.transcription.infra.persistence.repository.SpringDataTranscriptionJob
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class TranscriptionJobRepositoryAdapter
@@ -30,5 +31,10 @@ public class TranscriptionJobRepositoryAdapter
     @Override
     public Optional<TranscriptionJob> findBySourceHash(String sourceHash) {
         return repository.findBySourceHash(sourceHash).map(TranscriptionJobMapper::toDomain);
+    }
+
+    @Override
+    public Optional<TranscriptionJob> findById(UUID id) {
+        return repository.findById(id).map(TranscriptionJobMapper::toDomain);
     }
 }
