@@ -3,7 +3,6 @@ package com.transcription.infra.persistence.adapter;
 import com.transcription.core.domain.entity.TranscriptionJob;
 import com.transcription.core.domain.enums.TranscriptionStatus;
 import com.transcription.infra.TestApplication;
-import com.transcription.infra.TranscriptionJobRepositoryAdapter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
