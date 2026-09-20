@@ -15,4 +15,12 @@ public final class TranscriptionResultMapper {
                 result.getCreatedAt()
         );
     }
+
+    public static TranscriptionResult toDomain(TranscriptionResultJpaEntity entity) {
+        return new TranscriptionResult(
+                entity.getJobId(),
+                entity.getText(),
+                entity.getCreatedAt()
+        );
+    }
 }

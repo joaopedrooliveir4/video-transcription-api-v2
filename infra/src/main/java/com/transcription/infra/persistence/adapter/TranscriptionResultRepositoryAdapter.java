@@ -6,6 +6,9 @@ import com.transcription.infra.persistence.mapper.TranscriptionResultMapper;
 import com.transcription.infra.persistence.repository.SpringDataTranscriptionResultRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public class TranscriptionResultRepositoryAdapter implements TranscriptionResultRepository {
 
@@ -18,5 +21,11 @@ public class TranscriptionResultRepositoryAdapter implements TranscriptionResult
     @Override
     public void save(TranscriptionResult result) {
         repository.save(TranscriptionResultMapper.toJpaEntity(result));
+    }
+
+    @Override
+    public Optional<TranscriptionResult> findByJobId(UUID jobId) {
+        return repository.findByJobId(jobId)
+                .map(TranscriptionResultMapper::toDomain);
     }
 }

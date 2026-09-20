@@ -4,8 +4,11 @@ import com.transcription.core.application.gateway.SourceHashGenerator;
 import com.transcription.core.application.gateway.TranscriptionCacheGateway;
 import com.transcription.core.application.gateway.TranscriptionEventPublisher;
 import com.transcription.core.application.gateway.TranscriptionJobRepository;
+import com.transcription.core.application.gateway.TranscriptionResultRepository;
 import com.transcription.core.application.usecase.CreateTranscriptionJobUseCase;
+import com.transcription.core.application.usecase.FindTranscriptionJobUseCase;
 import com.transcription.core.application.usecase.impl.CreateTranscriptionJobUseCaseImpl;
+import com.transcription.core.application.usecase.impl.FindTranscriptionJobUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +26,14 @@ public class UseCaseConfig {
             Clock clock
     ) {
         return new CreateTranscriptionJobUseCaseImpl(transcriptionEventPublisher, transcriptionCacheGateway, repository, hashGenerator, clock);
+    }
+
+    @Bean
+    public FindTranscriptionJobUseCase findTranscriptionJobUseCase(
+            TranscriptionJobRepository jobRepository,
+            TranscriptionResultRepository resultRepository
+    ) {
+        return new FindTranscriptionJobUseCaseImpl(jobRepository, resultRepository);
     }
 
     @Bean

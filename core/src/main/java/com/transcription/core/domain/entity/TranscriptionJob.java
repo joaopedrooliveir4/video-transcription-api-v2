@@ -12,6 +12,7 @@ public class TranscriptionJob {
     private final String sourceHash;
 
     private TranscriptionStatus status;
+    private String errorMessage;
 
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -31,12 +32,17 @@ public class TranscriptionJob {
         this.sourceHash = sourceHash;
 
         this.status = TranscriptionStatus.PENDING;
+        this.errorMessage = null;
 
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
     }
 
     public TranscriptionJob(UUID id, String mediaSource, String sourceHash, TranscriptionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, mediaSource, sourceHash, status, createdAt, updatedAt, null);
+    }
+
+    public TranscriptionJob(UUID id, String mediaSource, String sourceHash, TranscriptionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, String errorMessage) {
         validateMediaSource(mediaSource);
         validateSourceHash(sourceHash);
         validateCreatedAt(createdAt);
@@ -47,6 +53,7 @@ public class TranscriptionJob {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.errorMessage = errorMessage;
     }
 
     public void markAsProcessing(LocalDateTime updatedAt) {
@@ -78,6 +85,10 @@ public class TranscriptionJob {
     }
 
     public void markAsFailed(LocalDateTime updatedAt) {
+        markAsFailed(updatedAt, null);
+    }
+
+    public void markAsFailed(LocalDateTime updatedAt, String errorMessage) {
 
         validateUpdatedAt(updatedAt);
 
@@ -89,6 +100,7 @@ public class TranscriptionJob {
 
         this.status = TranscriptionStatus.FAILED;
         this.updatedAt = updatedAt;
+        this.errorMessage = errorMessage;
     }
 
     private void validateMediaSource(String mediaSource) {
@@ -147,6 +159,10 @@ public class TranscriptionJob {
 
     public TranscriptionStatus getStatus() {
         return status;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
     public LocalDateTime getCreatedAt() {
