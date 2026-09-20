@@ -141,9 +141,9 @@ Em outro terminal:
 mvn spring-boot:run -pl worker
 ```
 
-### 5. Abra o frontend
+### 5. Frontend
 
-O frontend é um HTML estático simples (`index.html` + `styles.css` + `script.js`), sem build step. Basta abrir o `index.html` no navegador — por padrão ele aponta para `http://localhost:8080/v2`.
+O frontend (`index.html` + `styles.css` + `script.js`) vive em um **repositório separado**: [`video-transcription-api-v2-frontend`](https://github.com/joaopedrooliveir4/video-transcription-api-v2-frontend). Sem build step — clone-o à parte, abra o `index.html` no navegador. Por padrão ele aponta para `http://localhost:8080/v2`.
 
 ---
 
