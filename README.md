@@ -77,6 +77,11 @@ transcription-api-v2/
 - Sem autenticação e sem tabela de usuários (fora do escopo do projeto)
 - `source_hash` é o conceito central para deduplicação: jobs referenciam o hash da fonte, evitando reprocessar o mesmo vídeo
 
+### Diagrama
+
+<img width="2720" height="3040" alt="arquitetura_transcricao_v2" src="https://github.com/user-attachments/assets/bf62faa9-c9f9-4acc-b2e4-76c2abce6502" />
+<!-- [COLE AQUI O DIAGRAMA DE ARQUITETURA] -->
+
 ---
 
 ## Rodando localmente
