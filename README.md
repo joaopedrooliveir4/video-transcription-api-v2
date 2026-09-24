@@ -228,14 +228,6 @@ mvn test
 
 ---
 
-## Convenções do projeto
-
-- Commits seguem [Conventional Commits](https://www.conventionalcommits.org/), em português, sem acentos
-- Branches de feature nascem a partir de `develop` e voltam via fast-forward merge
-- Nada é commitado direto em `main`
-
----
-
 ## Licença
 
-Projeto pessoal de estudo — sem licença formal definida.
+Sem licença formal definida.
